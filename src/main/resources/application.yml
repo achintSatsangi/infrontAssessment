@@ -1,0 +1,14 @@
+server:
+  error:
+    include-message: always
+
+app:
+  config:
+    finanstilsynet-url: https://ssr.finanstilsynet.no/api/v2/instruments
+    pool:
+      maxTotal: 3
+      maxPerRoute: 3
+      connectionRequestTimeout: 4000
+      connectTimeout: 4000
+      socketTimeout: 8000
+

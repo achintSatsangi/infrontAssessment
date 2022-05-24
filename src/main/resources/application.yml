@@ -27,6 +27,10 @@ app:
       maxTotal: 10
       maxPerRoute: 10
 
+springdoc:
+  swagger-ui:
+    enabled: false
+
 logging:
   level:
     org: INFO

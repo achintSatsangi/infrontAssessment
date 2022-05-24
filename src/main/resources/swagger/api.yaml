@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: API for the Infront Assessment
+  description: "API for the Infront Assessment"
+  version: 1
+paths:
+  /instruments/{isin}:
+    get:
+      tags:
+        - Instrument
+      summary: GET short positions against an instrument.
+      description: "Returns short positions against an instrument."
+      operationId: getShortingHistory
+      parameters:
+        - name: isin
+          in: path
+          description: isin
+          required: true
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: "From date, format: yyyy-MM-dd. If left blank, all available data will be provided"
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: "To date, format: yyyy-MM-dd. If left blank, all available data will be provided"
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InstrumentShortingHistory'
+        '400':
+          description: 'Invalid input parameters'
+        '404':
+          description: 'No data found'
+        '500':
+          description: 'Internal server error'
+components:
+  schemas:
+    InstrumentShortingHistory:
+      type: object
+      description: Describes the shorting history of an instrument.
+      additionalProperties: false
+      properties:
+        isin:
+          type: string
+          description: International Securities Identification Number for this instrument
+        issuerName:
+          type: string
+          description: The name of the instrument issuer
+        events:
+          type: array
+          description: List of short events for this instrument. Together they represent the shorting history of the instrument. See [AggregatedShortEvent](#section/AggregatedShortEvent)
+          items:
+            $ref: '#/components/schemas/AggregatedShortEvent'
+    AggregatedShortEvent:
+      type: object
+      description: "\r\nDescribes a short event. Such an event is triggered when there is a change in the public shorting of the instrument.\r\n\r\nExamples: a new position holder shorts this instrument, or an existing position holder updates its short on the instrument."
+      additionalProperties: false
+      properties:
+        date:
+          type: string
+          description: The date of the short event
+          format: date
+        shortPercent:
+          type: number
+          description: Aggregated (total) short percentage
+          format: float
+        shares:
+          type: integer
+          description: Aggregated (total) number of shorted shares
+          format: int64
+        activePositions:
+          type: array
+          description: List of all the active public positions on the instrument at the given date. Together they make up this aggregated short event. See [UnderlyingShortPosition](#section/UnderlyingShortPosition)
+          items:
+            $ref: '#/components/schemas/UnderlyingShortPosition'
+    UnderlyingShortPosition:
+      type: object
+      description: Describes an individual short position.
+      additionalProperties: false
+      properties:
+        date:
+          type: string
+          description: The shorting date for this position
+          format: date
+        shortPercent:
+          type: number
+          description: The percentage of the total shares of the instrument shorted in this position
+          format: float
+        shares:
+          type: integer
+          description: The number of shares shorted in this position
+          format: int64
+        positionHolder:
+          type: string
+          description: The holder of this short position

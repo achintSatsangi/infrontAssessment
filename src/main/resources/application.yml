@@ -1,0 +1,37 @@
+server:
+  error:
+    include-message: always
+
+app:
+  config:
+    finanstilsynet-url: https://ssr.finanstilsynet.no/api/v2/instruments
+    pool:
+      maxTotal: 3
+      maxPerRoute: 3
+      connectionRequestTimeout: 4000
+      connectTimeout: 4000
+      socketTimeout: 8000
+
+logging:
+  level:
+    org: DEBUG
+    com: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+app:
+  config:
+    pool:
+      maxTotal: 10
+      maxPerRoute: 10
+
+springdoc:
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    org: INFO
+    com: INFO

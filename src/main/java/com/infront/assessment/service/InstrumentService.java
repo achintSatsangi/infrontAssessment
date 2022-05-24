@@ -35,7 +35,6 @@ public class InstrumentService {
     }
 
     private boolean filterEvent(Request request, AggregatedShortEvent event) {
-        return (event.getDate().isAfter(request.getFromDate()) || event.getDate().isEqual(request.getFromDate())) &&
-                (event.getDate().isBefore(request.getToDate())  || event.getDate().isEqual(request.getToDate()));
+        return !(event.getDate().isBefore(request.getFromDate()) || event.getDate().isAfter(request.getToDate()));
     }
 }

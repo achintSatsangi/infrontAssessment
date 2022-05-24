@@ -33,6 +33,8 @@ class ApplicationIntegrationTest {
 
     static List<InstrumentShortingHistory> dummyInstruments = getDummyInstruments();
 
+
+    // Remove this bean to test the application against the real Finanstilsynet APIs
     @Bean
     @Primary
     public FinanstilsynetDataProvider dummyFinanstilsynetDataProvider() {

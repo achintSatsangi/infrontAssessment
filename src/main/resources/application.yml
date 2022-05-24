@@ -12,3 +12,22 @@ app:
       connectTimeout: 4000
       socketTimeout: 8000
 
+logging:
+  level:
+    org: DEBUG
+    com: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+app:
+  config:
+    pool:
+      maxTotal: 10
+      maxPerRoute: 10
+
+logging:
+  level:
+    org: INFO
+    com: INFO
